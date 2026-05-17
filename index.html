@@ -1,0 +1,100 @@
+https://claude.com/cai/oauth/authorize?code=true&client_id=9d1c250a-e61b-44d9-88ed-5944d1962f5e&response_type=code&redirect_uri=https%3A%2F%2Fplatform.claude.com%2Foauth%2Fcode%2Fcallback&scope=org%3Acreate_api_key+user%3Aprofile+user%3Ainference+user%3Asessions%3Aclaude_code+user%3Amcp_servers+user%3Afile_upload&c
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anuj's Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #fff;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+    h1 { text-align: center; font-size: 1.4rem; color: #aaa; margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .card { background: #1a1a2e; border-radius: 16px; padding: 28px; border: 1px solid #2a2a4a; }
+    .card h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #666; margin-bottom: 12px; }
+    #time { font-size: 3.5rem; font-weight: 700; color: #fff; letter-spacing: -2px; }
+    #date { color: #888; margin-top: 6px; font-size: 0.95rem; }
+    #weather-temp { font-size: 3rem; font-weight: 700; color: #7eb8f7; }
+    #weather-desc { color: #888; margin-top: 6px; text-transform: capitalize; }
+    #countdown-days { font-size: 3.5rem; font-weight: 700; color: #f7a76e; }
+    #countdown-label { color: #888; margin-top: 6px; font-size: 0.9rem; }
+    #quote-text { font-size: 1.05rem; line-height: 1.6; color: #ccc; font-style: italic; }
+    #quote-author { margin-top: 10px; color: #666; font-size: 0.85rem; }
+    .goals ul { list-style: none; margin-top: 8px; }
+    .goals ul li { padding: 10px 0; border-bottom: 1px solid #2a2a4a; color: #ccc; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
+    .goals ul li::before { content: '→'; color: #7eb8f7; }
+    .goals ul li:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <h1>Anuj's Dashboard · Bangalore</h1>
+  <div class="grid">
+    <div class="card">
+      <h2>Time</h2>
+      <div id="time">--:--</div>
+      <div id="date">Loading...</div>
+    </div>
+    <div class="card">
+      <h2>Weather · Bangalore</h2>
+      <div id="weather-temp">--°C</div>
+      <div id="weather-desc">Fetching...</div>
+    </div>
+    <div class="card">
+      <h2>Countdown</h2>
+      <div id="countdown-days">--</div>
+      <div id="countdown-label">days until BCA begins (Aug 5)</div>
+    </div>
+    <div class="card">
+      <h2>Quote of the Day</h2>
+      <div id="quote-text">Loading...</div>
+      <div id="quote-author"></div>
+    </div>
+    <div class="card goals">
+      <h2>My Goals This Month</h2>
+      <ul>
+        <li>Ship 4 real projects before college</li>
+        <li>Learn HTML, CSS and JavaScript</li>
+        <li>Build something people actually use</li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('time').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('date').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    const target = new Date('2026-08-05');
+    const diff = Math.ceil((target - new Date()) / (1000 * 60 * 60 * 24));
+    document.getElementById('countdown-days').textContent = diff > 0 ? diff : 0;
+
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&current_weather=true')
+      .then(r => r.json())
+      .then(data => {
+        const descs = {0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',61:'Light rain',63:'Moderate rain',80:'Rain showers',95:'Thunderstorm'};
+        document.getElementById('weather-temp').textContent = data.current_weather.temperature + '°C';
+        document.getElementById('weather-desc').textContent = descs[data.current_weather.weathercode] || 'Cloudy';
+      });
+
+    const quotes = [
+      { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+      { text: "Done is better than perfect.", author: "Sheryl Sandberg" },
+      { text: "Build something people want.", author: "Paul Graham" },
+    ];
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quote-text').textContent = q.text;
+    document.getElementById('quote-author').textContent = '— ' + q.author;
+  </script>
+</body>
+</html
+
+
